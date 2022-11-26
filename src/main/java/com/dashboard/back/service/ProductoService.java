@@ -102,4 +102,27 @@ public class ProductoService implements BaseService<ProductoDto> {
 		return p;
 	}
 
+	@Override
+	public ProductoDto update(ProductoDto producto, Integer id) {
+		// TODO Auto-generated method stub
+		ProductoDto productoDto = this.findId(id);
+		
+		if(productoDto == null) {
+			return null;
+		}
+		if(productoDto.getCosto() != producto.getCosto()) {
+			productoDto.setCosto(producto.getCosto());
+		}
+		if(productoDto.getProveedorId() != producto.getProveedorId()) {
+			productoDto.setProveedorId(producto.getProveedorId());
+		}
+		if(productoDto.getNombre_producto() != producto.getNombre_producto()) {
+			productoDto.setNombre_producto(producto.getNombre_producto());
+		}
+		if(productoDto.getValor_producto() != producto.getValor_producto()) {
+			productoDto.setValor_producto(producto.getValor_producto());
+		}
+		return this.save(productoDto);
+	}
+
 }

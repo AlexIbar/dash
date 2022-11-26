@@ -15,6 +15,7 @@ public class EmpleadoService{
 	@Autowired
 	private EmpleadoRepository empleadoRepository;
 	
+	
 	public List<Empleado> findAll(){
 		return empleadoRepository.findAll();
 	}

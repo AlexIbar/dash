@@ -80,6 +80,23 @@ public class ProveedorService implements BaseService<ProveedorDto> {
 		);
 		return prov;
 	}
+
+	@Override
+	public ProveedorDto update(ProveedorDto proveedor, Integer id) {
+		ProveedorDto proveedorDto = this.findId(id);
+		
+		if(proveedorDto == null) {
+			return null;
+		}
+		
+		if(proveedor.getNombre_proveedor() != proveedorDto.getNombre_proveedor()) {
+			proveedorDto.setNombre_proveedor(proveedor.getNombre_proveedor());
+		}
+		if(proveedor.getNit_proveedor() != proveedorDto.getNit_proveedor()) {
+			proveedorDto.setNit_proveedor(proveedor.getNit_proveedor());
+		}
+		return this.save(proveedorDto);
+	}
 	
 	
 }

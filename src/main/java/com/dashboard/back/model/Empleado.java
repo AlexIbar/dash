@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import java.util.ArrayList;
@@ -106,6 +107,9 @@ public class Empleado {
 	public void setRoles(List<Rol> roles) {
 		this.roles = roles;
 	}
+	
+	@OneToMany(mappedBy = "empleado")
+	private List<Venta_encabezado> ventas_encabezado;
 	
 	
 	
