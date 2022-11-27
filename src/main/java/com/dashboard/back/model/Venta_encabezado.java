@@ -13,13 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="ventas_encabezado")
 public class Venta_encabezado {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id_producto;
+	private int id_factura;
 	
 	@Column(length = 5)
 	private String des_num_factura;
@@ -37,20 +38,28 @@ public class Venta_encabezado {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_tienda")
 	private Tienda tienda;
-	
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_empleado")
 	private Empleado empleado;
 	
+	public Empleado getEmpleado() {
+		return empleado;
+	}
+
+	public void setEmpleado(Empleado empleado) {
+		this.empleado = empleado;
+	}
+	
 	@OneToMany(mappedBy = "venta_encabezado")
 	private List<Venta_cuerpo> venta_cuerpo;
 
-	public Integer getId_producto() {
-		return id_producto;
+	public Integer getId_factura() {
+		return id_factura;
 	}
 
-	public void setId_producto(Integer id_producto) {
-		this.id_producto = id_producto;
+	public void setId_factura(Integer id_factura) {
+		this.id_factura = id_factura;
 	}
 
 	public String getDes_num_factura() {

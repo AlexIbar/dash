@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="tiendas")
 public class Tienda {
@@ -29,9 +31,11 @@ public class Tienda {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_ciudad")
+	@JsonIgnore
 	private Ciudad ciudad;
 	
 	@OneToMany(mappedBy = "tienda")
+	@JsonIgnore
 	private List<Venta_encabezado> ventas_encabezado;
 	
 	public Ciudad getCiudad() {

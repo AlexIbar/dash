@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.dashboard.back.Base.BaseService;
 import com.dashboard.back.dto.ProductoDto;
-import com.dashboard.back.dto.ProveedorDto;
 import com.dashboard.back.model.Producto;
 import com.dashboard.back.model.Proveedor;
 import com.dashboard.back.repository.ProductoRepository;
+import com.dashboard.back.repository.ProveedorRepository;
 
+@Service
 public class ProductoService implements BaseService<ProductoDto> {
 	
 	@Autowired
 	private ProductoRepository productRepository;
+	
+	@Autowired
+	private ProveedorRepository proveedorRepository;
 	
 	@Autowired
 	ProveedorService proveedorService;
@@ -34,7 +39,7 @@ public class ProductoService implements BaseService<ProductoDto> {
 			var prodDto = this.generateProductoDto( productoList.get(i) );
 			listProductDto.add(prodDto);
 		}
-		return null;
+		return listProductDto;
 	}
 
 	@Override
@@ -43,22 +48,19 @@ public class ProductoService implements BaseService<ProductoDto> {
 		if(producto == null) {
 			return null;
 		}
-		ProveedorDto proveedor = this.proveedorService.findId(producto.getProveedorId());
+		Proveedor proveedor = this.proveedorRepository.findById(producto.getId_proveedor()).orElse(null);
 		
 		if(proveedor == null) {
 			return null;
 		}
 		Producto productoSave = new Producto();
-		Proveedor prov = new Proveedor();
 		
-		prov.setId_proveedor(proveedor.getId_proveedor());
-		prov.setNit_proveedor(proveedor.getNit_proveedor());
-		prov.setNombre_proveedor(proveedor.getNombre_proveedor());
-		prov.setProductos(proveedor.getProductos());
-		
+		if(producto.getId_producto() != null && producto.getId_producto() > 0) {
+			productoSave.setId_producto(producto.getId_producto());
+		}
 		productoSave.setActivo(producto.isActivo());
 		productoSave.setCosto(producto.getCosto());
-		productoSave.setProveedor(prov);
+		productoSave.setProveedor(proveedor);
 		productoSave.setNombre_producto(producto.getNombre_producto());
 		productoSave.setValor_producto(producto.getValor_producto());
 		
@@ -67,9 +69,8 @@ public class ProductoService implements BaseService<ProductoDto> {
 		if(prod == null) {
 			return null;
 		}
-		
-		return this.generateProductoDto(prod);
-		// TODO Auto-generated method stub
+		ProductoDto dtoProd = this.generateProductoDto(prod); 
+		return dtoProd;
 	}
 
 	@Override
@@ -89,7 +90,12 @@ public class ProductoService implements BaseService<ProductoDto> {
 	@Override
 	public void delete(Integer id) {
 		// TODO Auto-generated method stub
-		this.productRepository.deleteById(id);
+		//this.productRepository.deleteById(id);
+		ProductoDto prod = this.findId(id);
+		if(prod != null) {
+			prod.setActivo(false);
+			this.update(prod, id);
+		}
 	}
 	
 	public ProductoDto generateProductoDto(Producto prod) {
@@ -99,6 +105,7 @@ public class ProductoService implements BaseService<ProductoDto> {
 		p.setActivo(prod.isActivo());
 		p.setCosto(prod.getCosto());
 		p.setProveedor(prod.getProveedor());
+		p.setId_proveedor(prod.getProveedor().getId_proveedor());
 		return p;
 	}
 
@@ -113,8 +120,8 @@ public class ProductoService implements BaseService<ProductoDto> {
 		if(productoDto.getCosto() != producto.getCosto()) {
 			productoDto.setCosto(producto.getCosto());
 		}
-		if(productoDto.getProveedorId() != producto.getProveedorId()) {
-			productoDto.setProveedorId(producto.getProveedorId());
+		if(productoDto.getId_proveedor() != producto.getId_proveedor()) {
+			productoDto.setId_proveedor(producto.getId_proveedor());
 		}
 		if(productoDto.getNombre_producto() != producto.getNombre_producto()) {
 			productoDto.setNombre_producto(producto.getNombre_producto());

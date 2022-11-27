@@ -51,6 +51,25 @@ public class ClienteService implements BaseService<ClienteDto> {
 		return this.transfromCliente(clientSave);
 		
 	}
+	
+
+	public ClienteDto updateUser(ClienteDto clienteDto) {
+		Cliente cliente = new Cliente();
+		
+		cliente.setId_cliente(clienteDto.getId_cliente());
+		cliente.setCedula_cliente(clienteDto.getCedula_cliente());
+		cliente.setCelular(clienteDto.getCelular());
+		cliente.setNombre_cliente(clienteDto.getNombre_cliente());
+		
+		Cliente clientSave = this.clienteRepository.save(cliente);
+		
+		if(clientSave == null) {
+			return null;
+		}
+		
+		return this.transfromCliente(clientSave);
+		
+	}
 
 	@Override
 	public ClienteDto findId(Integer id) {
@@ -75,7 +94,7 @@ public class ClienteService implements BaseService<ClienteDto> {
 		ClienteDto clientDto = new ClienteDto(
 				c.getId_cliente(),
 				c.getCedula_cliente(),
-				c.getNombre_cliente(),
+				c.getCelular(),
 				c.getNombre_cliente(),
 				c.getVentas_encabezado()
 		);
@@ -94,8 +113,7 @@ public class ClienteService implements BaseService<ClienteDto> {
 		if(cliente.getNombre_cliente() != clienteDto.getNombre_cliente()) {
 			cliente.setNombre_cliente(clienteDto.getNombre_cliente());
 		}
-		
-		return this.save(cliente);
+		return this.updateUser(cliente);
 	}
 	
 }

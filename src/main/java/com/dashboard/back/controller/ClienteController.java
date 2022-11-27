@@ -7,8 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +33,7 @@ public class ClienteController{
 	}
 
 
-	@GetMapping("/id")
+	@GetMapping("/search")
 	public ResponseEntity<ClienteDto> findById(@RequestParam String id) {
 		// TODO Auto-generated method stub
 		Integer id2 = Integer.parseInt(id);
@@ -41,7 +43,7 @@ public class ClienteController{
 
 
 	@PostMapping()
-	public ResponseEntity<ClienteDto> save(ClienteDto datos) {
+	public ResponseEntity<ClienteDto> save(@RequestBody ClienteDto datos) {
 		// TODO Auto-generated method stub
 		return new ResponseEntity<ClienteDto>(
 				this.clienteService.save(datos),
@@ -50,16 +52,16 @@ public class ClienteController{
 
 
 	@PutMapping()
-	public ResponseEntity<ClienteDto> update(ClienteDto datos, Integer id) {
+	public ResponseEntity<ClienteDto> update(@RequestBody ClienteDto datos, @RequestParam Integer id) {
 		return new ResponseEntity<ClienteDto>(
 				this.clienteService.update(datos, id),
 				HttpStatus.ACCEPTED);
 	}
 
-	@DeleteMapping()
-	public ResponseEntity<Boolean> delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Boolean> delete(@PathVariable Integer id) {
 		this.clienteService.delete(id);
-		return new ResponseEntity<Boolean>(true, null );
+		return new ResponseEntity<Boolean>(true, HttpStatus.ACCEPTED );
 	}
 
 }

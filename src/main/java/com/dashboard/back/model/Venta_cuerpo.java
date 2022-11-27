@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="ventas_cuerpo")
 public class Venta_cuerpo {
@@ -23,10 +25,12 @@ public class Venta_cuerpo {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_ventas_encabezado")
+	@JsonIgnore
 	private Venta_encabezado venta_encabezado;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_producto")
+	@JsonIgnore
 	private Producto producto;
 
 	public Integer getId_ventas_cuerpo() {

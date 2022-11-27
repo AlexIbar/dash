@@ -33,25 +33,7 @@ public class ProveedorService implements BaseService<ProveedorDto> {
 		}
 		return proveedorDtoList;
 	}
-
-	@Override
-	public ProveedorDto save(ProveedorDto proveedor) {
-		// TODO Auto-generated method stub
-		if(proveedor == null) {
-			return null;
-		}
-		Proveedor prov = new Proveedor();
-		prov.setNit_proveedor(proveedor.getNit_proveedor());
-		prov.setNombre_proveedor(proveedor.getNombre_proveedor());
-		prov.setProductos(proveedor.getProductos());
-		
-		var dataResponse = this.proveedorRepository.save(prov);
-		
-		ProveedorDto proveedorSave = this.proveedorDtoGenerate(dataResponse);
-		return proveedorSave;
-		
-	}
-
+	
 	@Override
 	public ProveedorDto findId(Integer id) {
 		// TODO Auto-generated method stub
@@ -66,21 +48,27 @@ public class ProveedorService implements BaseService<ProveedorDto> {
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public ProveedorDto save(ProveedorDto proveedor) {
 		// TODO Auto-generated method stub
-		this.proveedorRepository.deleteById(id);
+		if(proveedor == null) {
+			return null;
+		}
+		Proveedor prov = new Proveedor();
+		
+		if(proveedor.getId_proveedor() > 0) {
+			prov.setId_proveedor(proveedor.getId_proveedor());
+		}
+		prov.setNit_proveedor(proveedor.getNit_proveedor());
+		prov.setNombre_proveedor(proveedor.getNombre_proveedor());
+		prov.setProductos(proveedor.getProductos());
+		
+		var dataResponse = this.proveedorRepository.save(prov);
+		
+		ProveedorDto proveedorSave = this.proveedorDtoGenerate(dataResponse);
+		return proveedorSave;
+		
 	}
 	
-	private ProveedorDto proveedorDtoGenerate(Proveedor dataResponse) {
-		ProveedorDto prov = new ProveedorDto(
-				dataResponse.getId_proveedor(),
-				dataResponse.getNit_proveedor(),
-				dataResponse.getNombre_proveedor(),
-				dataResponse.getProductos()
-		);
-		return prov;
-	}
-
 	@Override
 	public ProveedorDto update(ProveedorDto proveedor, Integer id) {
 		ProveedorDto proveedorDto = this.findId(id);
@@ -96,6 +84,23 @@ public class ProveedorService implements BaseService<ProveedorDto> {
 			proveedorDto.setNit_proveedor(proveedor.getNit_proveedor());
 		}
 		return this.save(proveedorDto);
+	}
+	
+
+	@Override
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		this.proveedorRepository.deleteById(id);
+	}
+	
+	private ProveedorDto proveedorDtoGenerate(Proveedor dataResponse) {
+		ProveedorDto prov = new ProveedorDto(
+				dataResponse.getId_proveedor(),
+				dataResponse.getNit_proveedor(),
+				dataResponse.getNombre_proveedor(),
+				dataResponse.getProductos()
+		);
+		return prov;
 	}
 	
 	

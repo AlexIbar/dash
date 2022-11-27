@@ -17,7 +17,6 @@ public class ProductoDto {
 	@Size(min=100, message = "El valor minimo por producto es de $100")
 	private double valor_producto;
 	
-	
 	private boolean activo;
 	
 	@NotEmpty
@@ -26,7 +25,7 @@ public class ProductoDto {
 	
 	@NotEmpty
 	@Size(min=1, message="Es necesario asignar un proveedor al producto")
-	private int proveedorId;
+	private int id_proveedor;
 	
 	private Proveedor proveedor;
 
@@ -35,7 +34,7 @@ public class ProductoDto {
 			@NotEmpty @Size(min = 100, message = "El valor minimo por producto es de $100") double valor_producto,
 			boolean activo,
 			@NotEmpty @Size(min = 100, message = "El valor minimo por producto es de $100") double costo,
-			@NotEmpty @Size(min = 1, message = "Es necesario asignar un proveedor al producto") int proveedorId,
+			@NotEmpty @Size(min = 1, message = "Es necesario asignar un proveedor al producto") int id_proveedor,
 			Proveedor proveedor) {
 		super();
 		this.id_producto = id_producto;
@@ -43,8 +42,23 @@ public class ProductoDto {
 		this.valor_producto = valor_producto;
 		this.activo = activo;
 		this.costo = costo;
-		this.proveedorId = proveedorId;
+		this.id_proveedor = id_proveedor;
 		this.proveedor = proveedor;
+	}
+
+	public ProductoDto(
+			@NotEmpty @Size(min = 5, max = 100, message = "Se requiere como minimo 5 caracteres y maximo 100") String nombre_producto,
+			@NotEmpty @Size(min = 100, message = "El valor minimo por producto es de $100") double valor_producto,
+			boolean activo,
+			@NotEmpty @Size(min = 100, message = "El valor minimo por producto es de $100") double costo,
+			@NotEmpty @Size(min = 1, message = "Es necesario asignar un proveedor al producto") int id_proveedor,
+			Proveedor proveedor) {
+		super();
+		this.nombre_producto = nombre_producto;
+		this.valor_producto = valor_producto;
+		this.activo = activo;
+		this.costo = costo;
+		this.id_proveedor = id_proveedor;
 	}
 	
 	public ProductoDto(
@@ -52,14 +66,13 @@ public class ProductoDto {
 			@NotEmpty @Size(min = 100, message = "El valor minimo por producto es de $100") double valor_producto,
 			boolean activo,
 			@NotEmpty @Size(min = 100, message = "El valor minimo por producto es de $100") double costo,
-			@NotEmpty @Size(min = 1, message = "Es necesario asignar un proveedor al producto") int proveedorId
-	) {
+			Proveedor proveedor) {
 		super();
 		this.nombre_producto = nombre_producto;
 		this.valor_producto = valor_producto;
 		this.activo = activo;
 		this.costo = costo;
-		this.proveedorId = proveedorId;
+		this.proveedor = proveedor;
 	}
 	
 	public ProductoDto() {}
@@ -104,12 +117,12 @@ public class ProductoDto {
 		this.costo = costo;
 	}
 
-	public int getProveedorId() {
-		return proveedorId;
+	public int getId_proveedor() {
+		return id_proveedor;
 	}
 
-	public void setProveedorId(int proveedorId) {
-		this.proveedorId = proveedorId;
+	public void setId_proveedor(int id_proveedor) {
+		this.id_proveedor = id_proveedor;
 	}
 
 	public Proveedor getProveedor() {
@@ -119,7 +132,6 @@ public class ProductoDto {
 	public void setProveedor(Proveedor proveedor) {
 		this.proveedor = proveedor;
 	}
-	
 	
 	
 	

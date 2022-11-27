@@ -10,6 +10,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +100,7 @@ public class Empleado {
 			joinColumns = {@JoinColumn(name="id_empleado")},
 			inverseJoinColumns = {@JoinColumn(name="id_rol")}
 	)
+	@JsonIgnore
 	private List<Rol> roles = new ArrayList<Rol>();
 
 	public List<Rol> getRoles() {
@@ -109,7 +112,16 @@ public class Empleado {
 	}
 	
 	@OneToMany(mappedBy = "empleado")
+	@JsonIgnore
 	private List<Venta_encabezado> ventas_encabezado;
+
+	public List<Venta_encabezado> getVentas_encabezado() {
+		return ventas_encabezado;
+	}
+
+	public void setVentas_encabezado(List<Venta_encabezado> ventas_encabezado) {
+		this.ventas_encabezado = ventas_encabezado;
+	}
 	
 	
 	
