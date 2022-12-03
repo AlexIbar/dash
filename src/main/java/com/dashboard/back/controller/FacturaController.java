@@ -3,6 +3,7 @@ package com.dashboard.back.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class FacturaController {
 		return new ResponseEntity<Venta_encabezado>(this.facturaService.findById(id), HttpStatus.ACCEPTED);
 	}
 	@PostMapping(consumes = "application/json")
-	public ResponseEntity<Venta_encabezado> crear(@RequestBody FacturaEncabezadoDto acturaEncabezado) {
+	public ResponseEntity<Venta_encabezado> crear(@RequestBody FacturaEncabezadoDto acturaEncabezado) throws NotFoundException {
 		return new ResponseEntity<Venta_encabezado>(this.facturaService.crearEncabezado(acturaEncabezado), HttpStatus.CREATED);
 	}
 }

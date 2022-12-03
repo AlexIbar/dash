@@ -3,7 +3,12 @@ package com.dashboard.back.service;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dashboard.back.Base.BaseService;
@@ -12,9 +17,10 @@ import com.dashboard.back.model.Empleado;
 import com.dashboard.back.model.Rol;
 import com.dashboard.back.repository.EmpleadoRepository;
 import com.dashboard.back.repository.RolRepository;
+import com.dashboard.back.security.UserDetailsImpl;
 
 @Service
-public class EmpleadoService implements BaseService<EmpleadoDto>{
+public class EmpleadoService implements BaseService<EmpleadoDto>, UserDetailsService{
 	
 	@Autowired
 	private EmpleadoRepository empleadoRepository;
@@ -44,6 +50,10 @@ public class EmpleadoService implements BaseService<EmpleadoDto>{
 		var empleado = empleadoRepository.findById(id).orElse(null);
 		return this.convertEntityDto(empleado);
 	}
+	
+	public String encrypta(String pass) {
+		return new BCryptPasswordEncoder().encode(pass);
+	}
 
 	@Override
 	public EmpleadoDto save(EmpleadoDto e) {
@@ -54,7 +64,7 @@ public class EmpleadoService implements BaseService<EmpleadoDto>{
 			em.setEmail(e.getEmail());
 			em.setNombre(e.getNombre());
 			em.setToken_cambio(e.getToken_cambio());
-			em.setPassword(e.getPassword());
+			em.setPassword(this.encrypta(e.getPassword()));
 			
 			if(e.getId_rol() != null && e.getId_rol() > 0) {
 				List<Rol> roles = new ArrayList<Rol>();
@@ -105,6 +115,13 @@ public class EmpleadoService implements BaseService<EmpleadoDto>{
 		
 		return em;
 	}
-	
+
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Empleado empleado = empleadoRepository
+		.findOneByEmail(email)
+		.orElseThrow(()-> new UsernameNotFoundException("El usuario con email"+email+" no esta registrado"));
+		return new UserDetailsImpl(empleado);
+	}
 	
 }

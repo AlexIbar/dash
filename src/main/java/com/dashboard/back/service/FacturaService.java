@@ -1,8 +1,12 @@
 package com.dashboard.back.service;
 
+
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.dashboard.back.dto.FacturaCuerpoDto;
@@ -45,7 +49,7 @@ public class FacturaService {
 		return this.ventasEncabezadoRepository.findById(id).orElse(null);
 	}
 	
-	public Venta_encabezado crearEncabezado(FacturaEncabezadoDto fact) {
+	public Venta_encabezado crearEncabezado(FacturaEncabezadoDto fact) throws NotFoundException {
 		Venta_encabezado encabezado = new Venta_encabezado();
 		var cliente =this.clienteRepository.findById(fact.getId_cliente()).orElse(null);
 		if(cliente == null) {
@@ -54,7 +58,7 @@ public class FacturaService {
 		
 		var tienda = this.tiendaRepository.findById(fact.getId_tienda()).orElse(null);
 		if(tienda == null) {
-			return null;
+			throw new Error("Tienda no existe en la base de datos");
 		}
 		
 		var empleado = this.empleadoRepository.findById(fact.getId_empleado()).orElse(null);
@@ -74,6 +78,7 @@ public class FacturaService {
 		encabezado.setTienda(tienda);
 		encabezado.setDes_num_factura(fact.getDes_num_factura());
 		encabezado.setValor_factura(this.calcularValorFactura(fact.getListCuerpo()));
+		encabezado.setFecha_factura(Date.valueOf(LocalDate.now()));
 		Venta_encabezado encabezadoResp = this.ventasEncabezadoRepository.save(encabezado);
 		this.crearCuerpo(encabezadoResp, fact.getListCuerpo());
 		return this.ventasEncabezadoRepository.findById(encabezadoResp.getId_factura()).orElse(null);

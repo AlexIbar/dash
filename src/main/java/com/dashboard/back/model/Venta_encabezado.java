@@ -1,5 +1,6 @@
 package com.dashboard.back.model;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -26,7 +27,7 @@ public class Venta_encabezado {
 	private String des_num_factura;
 	
 	@Column(columnDefinition = "DATETIME")
-	private String fecha_factura;
+	private Date fecha_factura;
 	
 	
 	private double valor_factura;
@@ -70,12 +71,12 @@ public class Venta_encabezado {
 		this.des_num_factura = des_num_factura;
 	}
 
-	public String getFecha_factura() {
+	public Date getFecha_factura() {
 		return fecha_factura;
 	}
 
-	public void setFecha_factura(String fecha_factura) {
-		this.fecha_factura = fecha_factura;
+	public void setFecha_factura(Date date) {
+		this.fecha_factura = date;
 	}
 
 	public double getValor_factura() {

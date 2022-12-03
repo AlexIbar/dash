@@ -94,7 +94,7 @@ public class ProductoService implements BaseService<ProductoDto> {
 		ProductoDto prod = this.findId(id);
 		if(prod != null) {
 			prod.setActivo(false);
-			this.update(prod, id);
+			this.save(prod);
 		}
 	}
 	
